@@ -83,13 +83,15 @@ def check_drawn(player1_moves, player2_moves):
     global game_is_over
     if len(player1_moves) + len(player2_moves) == 9:
         print("It's a draw!")
-        return True
+        continue_playing = input("Do you want to play again? (Y/N): ").upper()
+        if continue_playing == 'Y':
+            game_initialization()
 
 game_initialization()
 
 while not game_is_over:
-    valid_move()
     if check_victory(player1_moves, player2_moves):
         break
     if check_drawn(player1_moves, player2_moves):
         break
+    valid_move()
