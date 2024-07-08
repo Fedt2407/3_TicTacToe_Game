@@ -10,7 +10,7 @@ player_2 = ''
 player1_moves = []
 player2_moves = []
 
-game_is_over = False
+game_is_on = True
 
 def print_grid():
     grid = f"\n {moves['A1']} | {moves['A2']} | {moves['A3']} \n-----------\n {moves['B1']} | {moves['B2']} | {moves['B3']} \n-----------\n {moves['C1']} | {moves['C2']} | {moves['C3']} \n"
@@ -80,8 +80,7 @@ def check_victory(player1_moves, player2_moves):
             return True
 
 def check_drawn(player1_moves, player2_moves):
-    global moves
-    global game_is_over
+    global moves, game_is_on
     if len(player1_moves) + len(player2_moves) == 9:
         print("It's a draw!")
         continue_playing = input("Do you want to play again? (Y/N): ").upper()
@@ -93,10 +92,14 @@ def check_drawn(player1_moves, player2_moves):
             }
             print_grid()
             game_initialization()
+        else:
+            game_is_on = False
 
 game_initialization()
 
-while not game_is_over:
+while game_is_on:
     check_victory(player1_moves, player2_moves)
     check_drawn(player1_moves, player2_moves)
+    if not game_is_on:
+        break
     valid_move()
