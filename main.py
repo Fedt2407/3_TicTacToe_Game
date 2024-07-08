@@ -17,19 +17,27 @@ def print_grid():
     print(grid)
 
 print(f"\nWelcome to Tic Tac Toe!")
-print_grid()
 
 def game_initialization():
-    global player_1, player_2
+    global player_1, player_2, moves, player1_moves, player2_moves
+    moves = {
+            'A1': ' ', 'A2': ' ', 'A3': ' ',
+            'B1': ' ', 'B2': ' ', 'B3': ' ',
+            'C1': ' ', 'C2': ' ', 'C3': ' '
+        }
+    player1_moves = []
+    player2_moves = []
+    print_grid()
     player_1 = input("Player 1, do you want to be X or O?: ").upper()
     if player_1 == "X":
         player_2 = "O"
+        valid_move()
     elif player_1 == "O":
         player_2 = "X"
+        valid_move()
     else:
         print("Invalid input. Please choose between X and O.")
         game_initialization()
-    valid_move()
 
 def valid_move():
     global active_player
@@ -52,48 +60,32 @@ def valid_move():
 
 
 def check_victory(player1_moves, player2_moves):
-    for move in player1_moves:
-        if 'A' in move and 'B' in move and 'C' in move:
+    winning_combinations = [
+        ['A1', 'A2', 'A3'], ['B1', 'B2', 'B3'], ['C1', 'C2', 'C3'],
+        ['A1', 'B1', 'C1'], ['A2', 'B2', 'C2'], ['A3', 'B3', 'C3'],
+        ['A1', 'B2', 'C3'], ['A3', 'B2', 'C1']
+    ]
+    for combination in winning_combinations:
+        if all(move in player1_moves for move in combination):
             print("Player 1 wins!")
-            return True
-        elif '1' in move and '2' in move and '3' in move:
-            print("Player 1 wins!")
-            return True
-        elif 'A1' in player1_moves and 'B2' in player1_moves and 'C3' in player1_moves:
-            print("Player 1 wins!")
-            return True
-        elif 'A3' in player1_moves and 'B2' in player1_moves and 'C1' in player1_moves:
-            print("Player 1 wins!")
-            return True
-    for move in player2_moves:
-        if 'A' in move and 'B' in move and 'C' in move:
+            game_restart()
+        elif all(move in player2_moves for move in combination):
             print("Player 2 wins!")
-            return True
-        elif '1' in move and '2' in move and '3' in move:
-            print("Player 2 wins!")
-            return True
-        elif 'A1' in player2_moves and 'B2' in player2_moves and 'C3' in player2_moves:
-            print("Player 2 wins!")
-            return True
-        elif 'A3' in player2_moves and 'B2' in player2_moves and 'C1' in player2_moves:
-            print("Player 2 wins!")
-            return True
+            game_restart()
 
 def check_drawn(player1_moves, player2_moves):
-    global moves, game_is_on
     if len(player1_moves) + len(player2_moves) == 9:
         print("It's a draw!")
-        continue_playing = input("Do you want to play again? (Y/N): ").upper()
-        if continue_playing == 'Y':
-            moves = {
-                'A1': ' ', 'A2': ' ', 'A3': ' ',
-                'B1': ' ', 'B2': ' ', 'B3': ' ',
-                'C1': ' ', 'C2': ' ', 'C3': ' '
-            }
-            print_grid()
-            game_initialization()
-        else:
-            game_is_on = False
+        game_restart()
+
+def game_restart():
+    global game_is_on, active_player
+    continue_playing = input("Do you want to play again? (Y/N): ").upper()
+    if continue_playing == 'Y':
+        active_player = 1
+        game_initialization()
+    else:
+        game_is_on = False
 
 game_initialization()
 
