@@ -80,18 +80,23 @@ def check_victory(player1_moves, player2_moves):
             return True
 
 def check_drawn(player1_moves, player2_moves):
+    global moves
     global game_is_over
     if len(player1_moves) + len(player2_moves) == 9:
         print("It's a draw!")
         continue_playing = input("Do you want to play again? (Y/N): ").upper()
         if continue_playing == 'Y':
+            moves = {
+                'A1': ' ', 'A2': ' ', 'A3': ' ',
+                'B1': ' ', 'B2': ' ', 'B3': ' ',
+                'C1': ' ', 'C2': ' ', 'C3': ' '
+            }
+            print_grid()
             game_initialization()
 
 game_initialization()
 
 while not game_is_over:
-    if check_victory(player1_moves, player2_moves):
-        break
-    if check_drawn(player1_moves, player2_moves):
-        break
+    check_victory(player1_moves, player2_moves)
+    check_drawn(player1_moves, player2_moves)
     valid_move()
